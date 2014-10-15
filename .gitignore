@@ -2,6 +2,10 @@
 logs
 *.log
 *.swp
+src/tests/config.coffee
+lib/tests/config.js
+tags
+
 # Runtime data
 pids
 *.pid

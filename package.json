@@ -1,0 +1,46 @@
+{
+  "name": "gama-search",
+  "description": "Gama search model",
+  "version": "0.0.1",
+  "homepage": "https://github.com/yxdh4620/gama-search",
+  "author": {
+    "name": "yxdh4620",
+    "email": "yxdh4620@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/yxdh4620/gama-search.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yxdh4620/gama-search/issues"
+  },
+  "licenses": [
+    {
+      "type": "NA",
+      "url": "https://github.com/yxdh4620/gama-search/blob/master/LICENSE-NA"
+    }
+  ],
+  "main": "lib/search",
+  "engines": {
+    "node": ">= 0.8.0"
+  },
+  "scripts": {
+    "watch": "coffee -o ./lib/ -cw ./src/",
+    "coffee": "coffee -o ./lib/ -cw ./src/",
+    "watch-client": "coffee -b -o ./public/js/site -cw public_src/js",
+    "start": "DEBUG=gama*,oss* ./node_modules/.bin/nodemon lib/server.js",
+    "distill": "distill -i ./src/server.coffee -o ./dist/maga.js",
+    "test": "mocha tests"
+  },
+  "dependencies": {
+    "coffee-script": "1.8.0",
+    "async": "0.2.10",
+    "underscore": "1.5.2",
+    "debug": "0.8.1",
+    "request": ">=2.27.0"
+  },
+  "devDependencies": {
+    "nodemon": "latest"
+  },
+  "keywords": []
+}
