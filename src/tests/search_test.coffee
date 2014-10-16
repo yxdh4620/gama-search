@@ -45,14 +45,29 @@ owner_id = 'GO2SIsP'
 search = new SearchManager(options)
 
 singleItem = [{
-  cmd: 'add',
-  "fields":{
-    title: '这里是一个标题001',
+    id:'aaaaaaaa'
+    title: '这里是一个标题002',
+    owner_id: owner_id,
+    desc:'这里是文档的详细内容',
+    model_name: 'iconpack'
+}]
+
+mulitItem = [
+  {
+    id:'bbbbbb'
+    title: '这里是一个标题003',
+    owner_id: owner_id,
+    desc:'这里是文档的详细内容',
+    model_name: 'iconpack'
+  },
+  {
+    id:'ccccccc'
+    title: '这里是一个标题005',
     owner_id: owner_id,
     desc:'这里是文档的详细内容',
     model_name: 'iconpack'
   }
-}]
+]
 
 describe "url_encode test", ->
 
@@ -60,21 +75,51 @@ describe "url_encode test", ->
     #TODO before
 
   describe "insert tests", ->
-
     it 'insert single', (done) ->
       search.insert singleItem, table_name, (err, data) ->
+        console.error "error:#{err}"
+        console.dir data
+        done()
+    it 'insert mulit', (done) ->
+      search.insert mulitItem, table_name, (err, data) ->
+        console.error "error:#{err}"
+        console.dir data
+        done()
+
+  describe "update tests", ->
+    it 'update single', (done) ->
+      search.update singleItem, table_name, (err, data) ->
+        console.error "error:#{err}"
+        console.dir data
+        done()
+    it 'update mulit', (done) ->
+      search.update mulitItem, table_name, (err, data) ->
+        console.error "error:#{err}"
+        console.dir data
         done()
 
   describe 'search tests', ->
-
     it "search id test", (done) ->
       search.searchById '3', owner_id, (err, data) ->
         console.log "err:#{err}"
         console.dir data
         done()
-  #  it "search default test", (done) ->
-  #    search.search '搜索', owner_id, (err, data) ->
-  #      console.log "err:#{err}"
+    it "search default test", (done) ->
+      search.search '文档', owner_id, (err, data) ->
+        console.error "error:#{err}"
+        console.dir data
+        done()
+
+  #describe "delete tests", ->
+  #  it 'delete single', (done) ->
+  #    search.delete ['aaaaaaaa'], table_name, (err, data) ->
+  #      console.error "error:#{err}"
+  #      console.dir data
+  #      done()
+
+  #  it 'delete mulit', (done) ->
+  #    search.delete ['bbbbbb','ccccccc'], table_name, (err, data) ->
+  #      console.error "error:#{err}"
   #      console.dir data
   #      done()
 

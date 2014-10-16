@@ -33,6 +33,17 @@ params =
   index_name:'ut_3885312'
   query:'config=format:json,start:0,hit:20&&query=default:'
 
+#params =
+#  AccessKeyId: 'aaa',
+#  SignatureMethod: 'HMAC-SHA1',
+#  SignatureNonce: '14134420315149832',
+#  SignatureVersion: '1.0',
+#  Timestamp: '2014-10-16T06:47:11Z',
+#  Version: 'v2',
+#  action: 'push',
+#  index_name: 'test',
+#  table_name: 'main'
+
 
 
 describe "crypto_util test", ->
@@ -48,7 +59,7 @@ describe "crypto_util test", ->
       done()
 
     it 'makeSign test', (done) ->
-      str = cryptoUtil.makeSign(params, 'GET', accessKeySecret)
+      str = cryptoUtil.makeSign(params, 'POST', accessKeySecret)
       console.log "str:#{str}"
       console.log str is urlEncode.encode('UZI0BW9cYD737iUzCRZawcQ07O4=')
       done()

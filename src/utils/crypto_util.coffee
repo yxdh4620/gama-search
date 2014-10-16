@@ -10,7 +10,6 @@ urlEncode = require './url_encode'
 
 dateYearRegexp = /(y+)/
 Date.prototype.Format = (fmt) ->
-  console.log "-------------------- #{this.toString()}"
   o = {
     "M+" : this.getMonth()+1,                 #//月份
     "d+" : this.getDate(),                    #//日
@@ -26,7 +25,6 @@ Date.prototype.Format = (fmt) ->
     if(new RegExp("(#{k})").test(fmt))
       fmt = fmt.replace(RegExp.$1, if RegExp.$1.length==1 then (o[k]) else (("00"+ o[k]).substr((""+ o[k]).length)))
   return fmt
-
 
 exports.md5 = (str) ->
   md5sum = crypto.createHash 'md5'
@@ -61,21 +59,18 @@ exports.makeNonce = () ->
 exports.makeSign = (params, httpMethod, accessKeySecret) ->
   q = ''
   if params?
-    #if params.sign_mode is "1" and params.items?
-    if params.items?
+    if params.sign_mode is "1" and params.items?
       delete params.items
-      #delete params.action
-      #delete params.table_name
-
-    console.dir params
+    #console.dir params
     keys = Object.keys params
     keys.sort()
     _p = {}
     for i in [0...keys.length]
       key = keys[i]
       _p[key] = params[key]
+  #console.dir _p
   q = "#{httpMethod}&#{urlEncode.encode('/')}&#{urlEncode.encode(urlEncode.query2string(_p))}"
-  console.log "q:#{q}"
+  #console.log "q:#{q}"
   sign = exports.hmac "#{q}", "#{accessKeySecret}&"
   #return urlEncode.encode sign
   return sign
@@ -94,11 +89,6 @@ exports.makeSign = (params, httpMethod, accessKeySecret) ->
 #
 #  q = urlEncode.query2string(_p)
 #  return exports.md5 "#{q}#{accessKeySecret}"
-
-exports.date2ISO = (date) ->
-  #:w
-  #2014-10-15T09:34:16.667Z
-  return "#{date.getFullYear()}-#{date.get}"
 
 
 #do ->
