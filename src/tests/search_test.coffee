@@ -46,11 +46,14 @@ search = new SearchManager(options)
 
 singleItem = [{
   cmd: 'add',
-  title: '这里是一个标题001',
-  owner_id: owner_id,
-  desc:'这里是文档的详细内容',
-  model_name: 'iconpack',
+  "fields":{
+    title: '这里是一个标题001',
+    owner_id: owner_id,
+    desc:'这里是文档的详细内容',
+    model_name: 'iconpack'
+  }
 }]
+
 describe "url_encode test", ->
 
   before () ->
@@ -65,9 +68,15 @@ describe "url_encode test", ->
   describe 'search tests', ->
 
     it "search id test", (done) ->
-      search.searchById 'id', owner_id, (err, data) ->
+      search.searchById '3', owner_id, (err, data) ->
+        console.log "err:#{err}"
+        console.dir data
         done()
-    it "search default test", (done) ->
-      search.search '搜索', owner_id, (err, data) ->
-        done()
+  #  it "search default test", (done) ->
+  #    search.search '搜索', owner_id, (err, data) ->
+  #      console.log "err:#{err}"
+  #      console.dir data
+  #      done()
+
+
 

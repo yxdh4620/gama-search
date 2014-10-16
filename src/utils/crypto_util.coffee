@@ -22,11 +22,8 @@ Date.prototype.Format = (fmt) ->
   }
   if(/(y+)/.test(fmt))
     fmt=fmt.replace(RegExp.$1, (this.getFullYear()+"").substr(4 - RegExp.$1.length))
-  console.dir o
   for k, val of o
-    console.log "k:#{k}"
-    if(new RegExp("("+ k +")").test(fmt))
-      console.log "+++++++++++++++++++++++++++"
+    if(new RegExp("(#{k})").test(fmt))
       fmt = fmt.replace(RegExp.$1, if RegExp.$1.length==1 then (o[k]) else (("00"+ o[k]).substr((""+ o[k]).length)))
   return fmt
 
@@ -37,10 +34,8 @@ exports.md5 = (str) ->
   return md5sum.digest 'hex'
 
 exports.hmac = (str, key) ->
-  #console.log "key:#{key}"
   hmacsum = crypto.createHmac 'sha1', key
   hmacsum.update str
-  #s = new Buffer(hmacsum.digest('hex'), 'base64')
   return hmacsum.digest().toString('base64')
 
 
@@ -52,6 +47,7 @@ exports.makeNonce = () ->
   time = parseInt(new Date().getTime())
   random = Math.floor(Math.random()*(9999-1000+1)+1000)
   return "#{time}#{random}"
+
 #exports.makeNonce = (accessKeyId, accessKeySecret) ->
 #  time = parseInt(new Date().getTime()/1000)
 #  return exports.md5("#{accessKeyId}#{accessKeySecret}#{time}")+".#{time}"
@@ -65,10 +61,13 @@ exports.makeNonce = () ->
 exports.makeSign = (params, httpMethod, accessKeySecret) ->
   q = ''
   if params?
-    #if params.items?
-    #  delete params.action
-    #  delete params.table_name
-    #  delete params.items
+    #if params.sign_mode is "1" and params.items?
+    if params.items?
+      delete params.items
+      #delete params.action
+      #delete params.table_name
+
+    console.dir params
     keys = Object.keys params
     keys.sort()
     _p = {}
