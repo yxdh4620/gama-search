@@ -41,13 +41,16 @@ options =
   apiURL:con.host
 
 table_name = 'main'
-owner_id = 'GO2SIsP'
+owner_id_1 = 'GO2SIsP'
+owner_id_2 = 'CSCC3LtU'
+model_name_1 = 'animations'
+model_name_2 = 'tilemaps'
 search = new SearchManager(options)
 
 singleItem = [{
     id:'aaaaaaaa'
     title: '这里是一个标题002',
-    owner_id: owner_id,
+    owner_id: owner_id_1,
     desc:'这里是文档的详细内容',
     model_name: 'iconpack'
 }]
@@ -56,20 +59,48 @@ mulitItem = [
   {
     id:'bbbbbb'
     title: '这里是一个标题003',
-    owner_id: owner_id,
+    owner_id: owner_id_1,
     desc:'这里是文档的详细内容',
     model_name: 'iconpack'
   },
   {
     id:'ccccccc'
     title: '这里是一个标题005',
-    owner_id: owner_id,
+    owner_id: owner_id_1,
+    desc:'这里是文档的详细内容',
+    model_name: model_name_1
+  },
+  {
+    id:'ddddddd'
+    title: '这里是一个标题005',
+    owner_id: owner_id_1,
+    desc:'这里是文档的详细内容',
+    model_name: model_name_2
+  },
+  {
+    id:'eeeeeee'
+    title: '这里是一个标题005',
+    owner_id: owner_id_2,
     desc:'这里是文档的详细内容',
     model_name: 'iconpack'
+  },
+  {
+    id:'fffffff'
+    title: '这里是一个标题005',
+    owner_id: owner_id_2,
+    desc:'这里是文档的详细内容',
+    model_name: model_name_1
+  },
+  {
+    id:'ggggggg'
+    title: '这里是一个标题005',
+    owner_id: owner_id_2,
+    desc:'这里是文档的详细内容',
+    model_name: model_name_2
   }
 ]
 
-describe "url_encode test", ->
+describe "search test", ->
 
   before () ->
     #TODO before
@@ -100,14 +131,15 @@ describe "url_encode test", ->
 
   describe 'search tests', ->
     it "search id test", (done) ->
-      search.searchById '3', owner_id, (err, data) ->
+      search.searchById '9', ['owner_id',owner_id_1,'OR','model_name',model_name_1], (err, data) ->
         console.log "err:#{err}"
         console.dir data
         done()
     it "search default test", (done) ->
-      search.search '文档', owner_id, (err, data) ->
+      search.search '文档', ['owner_id',owner_id_1,'OR','model_name',model_name_2], 1, (err, data) ->
         console.error "error:#{err}"
         console.dir data
+        console.dir data.result if (data||{}).status is "OK"
         done()
 
   #describe "delete tests", ->
