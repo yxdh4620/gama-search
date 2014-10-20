@@ -22,7 +22,7 @@ exports.encode = (str) ->
       for j in [0...jlen]
         out.push "%#{buf.substring(j*2, (j+1)*2)}"
   s = out.join('')
-  debug 'encode', s
+  #debug 'encode', s
   return s
 
 #将所需的参数装换为URL String
@@ -31,7 +31,7 @@ exports.query2string = (params) ->
   for key, val of params
     str += "#{exports.encode(key)}=#{exports.encode(val)}&"
   str = str.substring(0, str.length-1)#+exports.encode("的")
-  debug 'query2string', str
+  #debug 'query2string', str
   return str
 
 
@@ -40,7 +40,7 @@ exports.query2query = (params) ->
   p = {}
   for key, val of params
     p[exports.encode(key)] = "#{exports.encode(val)}"
-  debug "query2query", p
+  #debug "query2query", p
   return p
 
 

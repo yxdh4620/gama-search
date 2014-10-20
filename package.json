@@ -1,5 +1,5 @@
 {
-  "name": "yxdh4620",
+  "name": "gama-search",
   "description": "Gama search model",
   "version": "0.0.1",
   "homepage": "https://github.com/yxdh4620/gama-search",
@@ -34,7 +34,7 @@
     "async": "0.2.10",
     "underscore": "1.5.2",
     "debug": "0.8.1",
-    "request": ">=2.27.0"
+    "request": ">=2.45.0"
   },
   "devDependencies": {
     "nodemon": "latest"
