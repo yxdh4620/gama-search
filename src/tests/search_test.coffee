@@ -39,64 +39,110 @@ options =
   accessKeyId: con.accessKeyId
   accessKeySecret: con.accessKeySecret
   apiURL:con.host
+  indexName:"gama_test3"
 
 table_name = 'main'
 owner_id_1 = 'GO2SIsP'
-owner_id_2 = 'CSCC3LtU'
-model_name_1 = 'animations'
-model_name_2 = 'tilemaps'
+owner_id_2 = 'FOtmGSC'
+model_name_1 = 'Animation'
+model_name_2 = 'Tilemap'
 search = new SearchManager(options)
 
-singleItem = [{
-    id:'aaaaaaaa'
-    title: '这里是一个标题002',
-    owner_id: owner_id_1,
-    desc:'这里是文档的详细内容',
-    model_name: 'iconpack'
-}]
+#singleItem = [{
+#    id:'aaaaaaaa'
+#    title: '这里是一个标题002',
+#    owner_id: owner_id_1,
+#    desc:'这里是文档的详细内容',
+#    model_name: 'iconpack'
+#}]
+#
+#mulitItem = [
+#  {
+#    id:'bbbbbb'
+#    title: '这里是一个标题003',
+#    owner_id: owner_id_1,
+#    desc:'这里是文档的详细内容',
+#    model_name: 'iconpack'
+#  },
+#  {
+#    id:'ccccccc'
+#    title: '这里是一个标题005',
+#    owner_id: owner_id_1,
+#    desc:'这里是文档的详细内容',
+#    model_name: model_name_1
+#  },
+#  {
+#    id:'ddddddd'
+#    title: '这里是一个标题005',
+#    owner_id: owner_id_1,
+#    desc:'这里是文档的详细内容',
+#    model_name: model_name_2
+#  },
+#  {
+#    id:'eeeeeee'
+#    title: '这里是一个标题005',
+#    owner_id: owner_id_2,
+#    desc:'这里是文档的详细内容',
+#    model_name: 'iconpack'
+#  },
+#  {
+#    id:'fffffff'
+#    title: '这里是一个标题005',
+#    owner_id: owner_id_2,
+#    desc:'这里是文档的详细内容',
+#    model_name: model_name_1
+#  },
+#  {
+#    id:'ggggggg'
+#    title: '这里是一个标题005',
+#    owner_id: owner_id_2,
+#    desc:'这里是文档的详细内容',
+#    model_name: model_name_2
+#  }
+#]
+
+singleItem = [
+  {
+    id: '6gUxv34',
+    owner_id: 'FOtmGSC',
+    permalink: 'test1/test2',
+    model_name: 'Animation',
+    created_at: '2014-09-09T02:53:59.012Z',
+    item: '{"id":"6gUxv34","model_name":"Animation","owner_id":"FOtmGSC","title":"0010.png","desc":"","compiled_assets":{},"tags":[]}'
+  }
+]
 
 mulitItem = [
   {
-    id:'bbbbbb'
-    title: '这里是一个标题003',
-    owner_id: owner_id_1,
-    desc:'这里是文档的详细内容',
-    model_name: 'iconpack'
+    id: '6gUxv34',
+    owner_id: 'FOtmGSC',
+    permalink: 'test1/test2',
+    model_name: 'Animation',
+    created_at: '2014-09-09T02:53:59.012Z',
+    item: '{"id":"6gUxv34","model_name":"Animation","owner_id":"FOtmGSC","title":"0010.png","desc":"","compiled_assets":{},"tags":[]}' },
+  {
+    id: 'CQ33vri',
+    owner_id: 'FOtmGSC',
+    permalink: 'test1/test2',
+    model_name: 'Figure',
+    created_at: '2014-09-09T04:46:12.646Z',
+    item: '{"id":"CQ33vri","model_name":"Figure","owner_id":"FOtmGSC","title":"untitled","desc":"","compiled_assets":{},"tags":[],"poses":[{"name":"act","_id":"540e86142994e1090fd0e8f5","flips":[0,0,0,0,0,0,0,0],"animations":["","","","","","","",""]}]}'
   },
   {
-    id:'ccccccc'
-    title: '这里是一个标题005',
-    owner_id: owner_id_1,
-    desc:'这里是文档的详细内容',
-    model_name: model_name_1
+    id: 'IWGi3JC',
+    owner_id: 'FOtmGSC',
+    permalink: 'test1/test2',
+    model_name: 'Figure',
+    created_at: '2014-09-09T02:54:51.838Z',
+    item: '{"id":"IWGi3JC","model_name":"Figure","owner_id":"FOtmGSC","title":"untitled","desc":"","compiled_assets":{},"tags":[],"poses":[{"name":"act","_id":"540e6bfba4cc02c705be7382","flips":[0,0,1,0,0,0,0,0],"animations":["96zRxm4","","96zRxm4","","","","",""]}]}'
   },
   {
-    id:'ddddddd'
-    title: '这里是一个标题005',
-    owner_id: owner_id_1,
-    desc:'这里是文档的详细内容',
-    model_name: model_name_2
-  },
-  {
-    id:'eeeeeee'
-    title: '这里是一个标题005',
-    owner_id: owner_id_2,
-    desc:'这里是文档的详细内容',
-    model_name: 'iconpack'
-  },
-  {
-    id:'fffffff'
-    title: '这里是一个标题005',
-    owner_id: owner_id_2,
-    desc:'这里是文档的详细内容',
-    model_name: model_name_1
-  },
-  {
-    id:'ggggggg'
-    title: '这里是一个标题005',
-    owner_id: owner_id_2,
-    desc:'这里是文档的详细内容',
-    model_name: model_name_2
+    id: '8OuLxgQ',
+    owner_id: 'FOtmGSC',
+    permalink: 'test1/test2',
+    model_name: 'Tilemap',
+    created_at: '2014-09-09T02:57:18.544Z',
+    item: '{"id":"8OuLxgQ","model_name":"Tilemap","owner_id":"FOtmGSC","title":"XFjXLifh-tilemaps-3hLQqBp-source.jpg","desc":"","compiled_assets":{},"tags":[]}'
   }
 ]
 
@@ -131,12 +177,12 @@ describe "search test", ->
 
   describe 'search tests', ->
     it "search id test", (done) ->
-      search.searchById '9', ['owner_id',owner_id_1,'OR','model_name',model_name_1], (err, data) ->
+      search.searchById 'GvsQB4Q', ['owner_id',owner_id_1,'OR','model_name',model_name_1], (err, data) ->
         console.log "err:#{err}"
         console.dir data
         done()
     it "search default test", (done) ->
-      search.search '文档', ['owner_id',owner_id_1,'OR','model_name',model_name_2], 1, (err, data) ->
+      search.search 'Tilemap', 'item', ['owner_id',owner_id_2,'AND','model_name',model_name_2], 1, (err, data) ->
         console.error "error:#{err}"
         console.dir data
         console.dir data.result if (data||{}).status is "OK"
