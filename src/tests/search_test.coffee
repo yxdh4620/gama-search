@@ -176,13 +176,29 @@ describe "search test", ->
         done()
 
   describe 'search tests', ->
-    it "search id test", (done) ->
-      search.searchById 'GvsQB4Q', ['owner_id',owner_id_1,'OR','model_name',model_name_1], (err, data) ->
-        console.log "err:#{err}"
-        console.dir data
-        done()
+  #  it "search id test", (done) ->
+  #    search.searchById 'GvsQB4Q', ['owner_id',owner_id_1,'OR','model_name',model_name_1], (err, data) ->
+  #      console.log "err:#{err}"
+  #      console.dir data
+  #      done()
     it "search default test", (done) ->
       search.search 'Tilemap', 'item', ['owner_id',owner_id_2,'AND','model_name',model_name_2], 1, (err, data) ->
+        console.error "error:#{err}"
+        console.dir data
+        console.dir data.result if (data||{}).status is "OK"
+        done()
+
+    it "advancedSearch tests", (done)->
+      subQuerys =
+        filter:['owner_id',owner_id_2,'AND','model_name',model_name_2]
+        aggregate:"group_key:model_name,agg_fun:count()"
+      #  sort: "+model_name"
+      #  distinct: "dist_key:model_name"
+      others =
+        fetch_fields:['id','model_name','item']
+        summary:"summary_field:item"
+
+      search.advancedSearch 'Tilemap', 'item',  1, subQuerys, others, (err, data) ->
         console.error "error:#{err}"
         console.dir data
         console.dir data.result if (data||{}).status is "OK"

@@ -1,7 +1,7 @@
 {
   "name": "gama-search",
   "description": "Gama search model",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "homepage": "https://github.com/yxdh4620/gama-search",
   "author": "yxdh4620 <yxdh4620@gmail.com>",
   "repository": {
@@ -24,9 +24,6 @@
   "scripts": {
     "watch": "coffee -o ./lib/ -cw ./src/",
     "coffee": "coffee -o ./lib/ -cw ./src/",
-    "watch-client": "coffee -b -o ./public/js/site -cw public_src/js",
-    "start": "DEBUG=gama*,oss* ./node_modules/.bin/nodemon lib/server.js",
-    "distill": "distill -i ./src/server.coffee -o ./dist/maga.js",
     "test": "mocha tests"
   },
   "dependencies": {

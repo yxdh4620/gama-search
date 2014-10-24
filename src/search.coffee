@@ -28,6 +28,17 @@ _makeFilter = (filter) ->
           filterStr += "contain(#{val}, \"#{filter[step+1]}\") #{filter[step+2]||''} "
   return filterStr
 
+#获得返回字段设置的语法字符串
+_makeFields = (fields) ->
+  if _.isString(fields)
+    return fields
+  if _.isArray(fields)
+    str = ""
+    for val in fields
+      str += "#{val};"
+    return str.substring(0, str.length-1)
+  return null
+
 class SearchManager
 
   # 构造函数
@@ -152,6 +163,61 @@ class SearchManager
       callback err, body
       return
     return
+
+  advancedSearch : (queryStr, fieldName, page, subQuerys, others, callback) ->
+
+    page = 1 unless _.isNumber(page) and page>0
+    start = (page-1)*@pageSize
+    url = urlUtil.resolve @serverURL, path.join('search')
+    params = @loadPublicParams()
+    fieldName = fieldName || 'default'
+    subQuerys = subQuerys || {}
+    others = others || {}
+
+    query =  "config=fromat:json,start:#{start},hit:#{@pageSize}&&query=#{fieldName}:'#{queryStr}'"
+
+    if subQuerys.aggregate? and _.isString(subQuerys.aggregate)
+      query += "&&aggregate=#{subQuerys.aggregate}"
+
+    if subQuerys.sort? and _.isString(subQuerys.sort)
+      query += "&&sort=#{subQuerys.sort}"
+
+    if subQuerys.distinct? and _.isString(subQuerys.distinct)
+      query += "&&distinct=#{subQuerys.distinct}"
+    if subQuerys.filter?
+      query += "&&filter=#{_makeFilter(subQuerys.filter)}"
+
+    params['query'] = query
+    params['index_name'] = @indexName
+
+    if others.fetch_fields?
+      field = _makeFields(others.fetch_fields)
+      if field?
+        params['fetch_fields'] = _makeFields(others.fetch_fields)
+
+    if others.formula_name? and _.isString(others.formula_name)
+      params['formula_name'] = others.formula_name
+
+    if others.first_formula_name? and _.isString(others.first_formula_name)
+      params['first_formula_name'] = other.first_formula_name
+
+    if others.summary? and _.isString(others.summary)
+      params['summary'] = others.summary
+
+    params['Signature'] = cryptoUtil.makeSign(params, GET_HTTP_METHOD, @accessKeySecret)
+
+    options =
+      url: "#{url}?#{urlEncode.query2string(params)}"
+      method:GET_HTTP_METHOD
+      timeout: @timeout
+
+    request options, (err, res, body) =>
+      unless err
+        body = @_parseResult(body, page)
+      callback err, body
+      return
+    return
+
 
   # 删除文档
   # @param ids [id,id]
