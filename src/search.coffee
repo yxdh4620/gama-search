@@ -117,8 +117,28 @@ class SearchManager
   # @param table_name 表名
   # @return callback(err, data) data(json格式) 成功：{"status":"OK"} 失败：'{"status":"FAIL","errors":[{"code":4010,"message":"timestamp expired"}],"RequestId":"141344839303112480055370"}'
   update : (items, table_name, callback) ->
-    @insert items, table_name, callback
+    assert Array.isArray(items) and items.length>0, "missing options"
+    assert table_name, "missing table_name"
+    assert _.isFunction(callback), "missing callback"
+    url = urlUtil.resolve @serverURL, path.join("index/doc",@indexName)
+    #console.dir items
+    cmd = 'update'
+    query = []
+    for val in items
+      query.push {
+        cmd: cmd
+        fields:val
+      }
+    params =
+      action:'push'
+      items:JSON.stringify(query)
+      table_name: table_name
+      sing_mode: "#{SIGN_MODE}"
+    @apiCall url, params, POST_HTTP_METHOD, callback
     return
+
+    #@insert items, table_name, callback
+    #return
 
   # 搜索文档(按id主键进行的搜索，所以没有分页)
   # @public
