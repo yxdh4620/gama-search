@@ -39,6 +39,18 @@ _makeFields = (fields) ->
     return str.substring(0, str.length-1)
   return null
 
+
+_makeMultipleIdStr = (ids) ->
+  if _.isString(ids)
+    return ids
+  if _.isArray(ids)
+    str = ""
+    for val in ids
+      str += "id:'#{val}' OR "
+    return str.substring(0, str.length-3)
+  return null
+
+
 class SearchManager
 
   # 构造函数
@@ -132,6 +144,27 @@ class SearchManager
       callback err, body
       return
     return
+
+
+  searchByMultipleId : (ids, filter, callback) ->
+    url = urlUtil.resolve @serverURL, path.join('search')
+    params = @loadPublicParams()
+    queryStr = _makeMultipleIdStr(ids)
+    #console.log "queryStr: #{queryStr}"
+    params['query'] ="config=fromat:json,start:0,hit:#{@pageSize}&&query=#{queryStr}&&filter=#{_makeFilter(filter)}"
+    params['index_name'] = @indexName
+    params['Signature'] = cryptoUtil.makeSign(params, GET_HTTP_METHOD, @accessKeySecret)
+    #console.dir params
+    options =
+      url: "#{url}?#{urlEncode.query2string(params)}"
+      method:GET_HTTP_METHOD
+      timeout: @timeout
+    request options, (err, res, body) =>
+      body = @_parseResult(body)
+      callback err, body
+      return
+    return
+
 
   # 搜索文档
   # @public

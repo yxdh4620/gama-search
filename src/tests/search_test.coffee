@@ -33,13 +33,15 @@ action=push&Version=v2&AccessKeyId=$accessKeyId&Signature=$signature&
     @signatureVersion = searchOptions.SignatureVersion || '1.0'
 
 ###
-
-con = config.opensearch || {}
+console.dir config
+con = config.openSearch || {}
+console.dir con
 options =
   accessKeyId: con.accessKeyId
   accessKeySecret: con.accessKeySecret
   apiURL:con.host
-  indexName:"gama_test3"
+  indexName:con.appName
+  pageSize: con.pageSize
 
 table_name = 'main'
 owner_id_1 = 'GO2SIsP'
@@ -151,29 +153,29 @@ describe "search test", ->
   before () ->
     #TODO before
 
-  describe "insert tests", ->
-    it 'insert single', (done) ->
-      search.insert singleItem, table_name, (err, data) ->
-        console.error "error:#{err}"
-        console.dir data
-        done()
-    it 'insert mulit', (done) ->
-      search.insert mulitItem, table_name, (err, data) ->
-        console.error "error:#{err}"
-        console.dir data
-        done()
+  #describe "insert tests", ->
+  #  it 'insert single', (done) ->
+  #    search.insert singleItem, table_name, (err, data) ->
+  #      console.error "error:#{err}"
+  #      console.dir data
+  #      done()
+  #  it 'insert mulit', (done) ->
+  #    search.insert mulitItem, table_name, (err, data) ->
+  #      console.error "error:#{err}"
+  #      console.dir data
+  #      done()
 
-  describe "update tests", ->
-    it 'update single', (done) ->
-      search.update singleItem, table_name, (err, data) ->
-        console.error "error:#{err}"
-        console.dir data
-        done()
-    it 'update mulit', (done) ->
-      search.update mulitItem, table_name, (err, data) ->
-        console.error "error:#{err}"
-        console.dir data
-        done()
+  #describe "update tests", ->
+  #  it 'update single', (done) ->
+  #    search.update singleItem, table_name, (err, data) ->
+  #      console.error "error:#{err}"
+  #      console.dir data
+  #      done()
+  #  it 'update mulit', (done) ->
+  #    search.update mulitItem, table_name, (err, data) ->
+  #      console.error "error:#{err}"
+  #      console.dir data
+  #      done()
 
   describe 'search tests', ->
   #  it "search id test", (done) ->
@@ -181,28 +183,63 @@ describe "search test", ->
   #      console.log "err:#{err}"
   #      console.dir data
   #      done()
-    it "search default test", (done) ->
-      search.search 'Tilemap', 'item', ['owner_id',owner_id_2,'AND','model_name',model_name_2], 1, (err, data) ->
-        console.error "error:#{err}"
+
+    it "search multi id test", (done) ->
+      search.searchByMultipleId "id:'989541712' OR id:'992232784'", null, (err, data) ->
+      #search.searchByMultipleId [989541712,992232784], null, (err, data) ->
+        console.log "err:#{err}"
         console.dir data
         console.dir data.result if (data||{}).status is "OK"
         done()
 
-    it "advancedSearch tests", (done)->
-      subQuerys =
-        filter:['owner_id',owner_id_2,'AND','model_name',model_name_2]
-        aggregate:"group_key:model_name,agg_fun:count()"
-      #  sort: "+model_name"
-      #  distinct: "dist_key:model_name"
-      others =
-        fetch_fields:['id','model_name','item']
-        summary:"summary_field:item"
+  #  it "search default test", (done) ->
+  #    search.search 'a', null, null, 1, (err, data) ->
+  #      console.error "error:#{err}"
+  #      console.dir data
+  #      console.dir data.result if (data||{}).status is "OK"
+  #      done()
 
-      search.advancedSearch 'Tilemap', 'item',  1, subQuerys, others, (err, data) ->
-        console.error "error:#{err}"
-        console.dir data
-        console.dir data.result if (data||{}).status is "OK"
-        done()
+  #  it "advancedSearch tests", (done)->
+  #    subQuerys = null
+  #    others =
+  #      fetch_fields:['aid']
+
+  #    search.advancedSearch 'a', null,  1, subQuerys, others, (err, data) ->
+  #      console.error "error:#{err}"
+  #      console.dir data
+  #      console.dir data.result if (data||{}).status is "OK"
+  #      done()
+
+  #  it "search kind sort test", (done) ->
+  #    search.search 'a', 'kind', 'score=0', 1, (err, data) ->
+  #      console.error "error:#{err}"
+  #      console.dir data
+  #      console.dir data.result if (data||{}).status is "OK"
+  #      done()
+
+
+    #it "search default test", (done) ->
+    #  search.search 'Tilemap', 'item', ['owner_id',owner_id_2,'AND','model_name',model_name_2], 1, (err, data) ->
+    #    console.error "error:#{err}"
+    #    console.dir data
+    #    console.dir data.result if (data||{}).status is "OK"
+    #    done()
+
+    #it "advancedSearch tests", (done)->
+    #  subQuerys =
+    #    filter:['owner_id',owner_id_2,'AND','model_name',model_name_2]
+    #    aggregate:"group_key:model_name,agg_fun:count()"
+    #  #  sort: "+model_name"
+    #  #  distinct: "dist_key:model_name"
+    #  others =
+    #    fetch_fields:['id','model_name','item']
+    #    summary:"summary_field:item"
+
+    #  search.advancedSearch 'Tilemap', 'item',  1, subQuerys, others, (err, data) ->
+    #    console.error "error:#{err}"
+    #    console.dir data
+    #    console.dir data.result if (data||{}).status is "OK"
+    #    done()
 
   #describe "delete tests", ->
   #  it 'delete single', (done) ->
