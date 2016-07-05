@@ -195,14 +195,17 @@ class SearchManager
   # @return callback(err, data)
   #   data(json格式)  成功：'{"status":"OK","result":{"searchtime":0.008163,"total":3,"num":3,"viewtotal":3,"items":[{"id":"bbbbbb","title":"zhe li shi yi ge biao ti 003","owner_id":"GO2SIsP","desc":"这里是文档的详细内容","model_name":"iconpack","index_name":"test"},{"id":"ccccccc","title":"zhe li shi yi ge biao ti 005","owner_id":"GO2SIsP","desc":"这里是文档的详细内容","model_name":"iconpack","index_name":"test"},{"id":"aaaaaaaa","title":"zhe li shi yi ge biao ti 002","owner_id":"GO2SIsP","desc":"这里是文档的详细内容","model_name":"iconpack","index_name":"test"}],"facet":[]},"errors":[],"tracer":""}'
   #         失败：'{"status":"FAIL","errors":[{"code":4010,"message":"timestamp expired"}],"RequestId":"141344839303112480055370"}'
-  search : (queryStr, fieldName, filter, page, callback) ->
+  search : (queryStr, fieldName, filter, page, pageSize, callback) ->
     page = 1 unless _.isNumber(page) and page>0
-    start = (page-1)*@pageSize
+    if _.isFunction(pageSize)
+      callback = pageSize
+      pageSize = null
+    start = (page-1)* (pageSize||@pageSize)
     url = urlUtil.resolve @serverURL, path.join('search')
     params = @loadPublicParams()
     fieldName = fieldName || 'default'
     #params['query'] = "config=fromat:json,start:#{start},hit:#{@pageSize}&&query=default:#{queryStr}&&filter=contain(owner_id, \"#{owner_id}\") AND contain(model_name, \"tilemaps\")"
-    params['query'] = "config=fromat:json,start:#{start},hit:#{@pageSize}&&query=#{fieldName}:'#{queryStr}'&&filter=#{_makeFilter(filter)}"
+    params['query'] = "config=fromat:json,start:#{start},hit:#{(pageSize||@pageSize)}&&query=#{fieldName}:'#{queryStr}'&&filter=#{_makeFilter(filter)}"
     params['index_name'] = @indexName
     params['Signature'] = cryptoUtil.makeSign(params, GET_HTTP_METHOD, @accessKeySecret)
     options =
@@ -217,17 +220,20 @@ class SearchManager
       return
     return
 
-  advancedSearch : (queryStr, fieldName, page, subQuerys, others, callback) ->
+  advancedSearch : (queryStr, fieldName, page, subQuerys, others, pageSize, callback) ->
 
     page = 1 unless _.isNumber(page) and page>0
-    start = (page-1)*@pageSize
+    if _.isFunction(pageSize)
+      callback = pageSize
+      pageSize = null
+
+    start = (page-1)* (pageSize||@pageSize)
     url = urlUtil.resolve @serverURL, path.join('search')
     params = @loadPublicParams()
     fieldName = fieldName || 'default'
     subQuerys = subQuerys || {}
     others = others || {}
-
-    query =  "config=fromat:json,start:#{start},hit:#{@pageSize}&&query=#{fieldName}:'#{queryStr}'"
+    query =  "config=fromat:json,start:#{start},hit:#{(pageSize||@pageSize)}&&query=#{fieldName}:'#{queryStr}'"
 
     if subQuerys.aggregate? and _.isString(subQuerys.aggregate)
       query += "&&aggregate=#{subQuerys.aggregate}"

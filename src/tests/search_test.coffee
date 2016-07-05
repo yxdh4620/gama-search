@@ -43,6 +43,7 @@ options =
   indexName:con.appName
   pageSize: con.pageSize
 
+fieldName = 'search_name'
 table_name = 'main'
 owner_id_1 = 'GO2SIsP'
 owner_id_2 = 'FOtmGSC'
@@ -192,23 +193,25 @@ describe "search test", ->
         console.dir data.result if (data||{}).status is "OK"
         done()
 
-  #  it "search default test", (done) ->
-  #    search.search 'a', null, null, 1, (err, data) ->
-  #      console.error "error:#{err}"
-  #      console.dir data
-  #      console.dir data.result if (data||{}).status is "OK"
-  #      done()
+    it "search default test", (done) ->
+      search.search 'a', fieldName, null, 1, 2, (err, data) ->
+        console.error "error:#{err}"
+        console.dir data
+        console.dir data.result if (data||{}).status is "OK"
+        done()
 
-  #  it "advancedSearch tests", (done)->
-  #    subQuerys = null
-  #    others =
-  #      fetch_fields:['aid']
+    it "advancedSearch tests", (done)->
+      subQuerys =
+        filter:['kind','a']
+        sort: 'score'
 
-  #    search.advancedSearch 'a', null,  1, subQuerys, others, (err, data) ->
-  #      console.error "error:#{err}"
-  #      console.dir data
-  #      console.dir data.result if (data||{}).status is "OK"
-  #      done()
+      others =
+        fetch_fields:['aid', 'score']
+      search.advancedSearch '呼', fieldName, 1, {filter:['kind','a'],sort:'score'}, {fetch_fields:['aid','score', 'search_name']}, 2, (err, data) ->
+        console.error "error:#{err}"
+        console.dir data
+        console.dir data.result if (data||{}).status is "OK"
+        done()
 
   #  it "search kind sort test", (done) ->
   #    search.search 'a', 'kind', 'score=0', 1, (err, data) ->
