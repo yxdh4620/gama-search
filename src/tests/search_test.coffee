@@ -224,7 +224,7 @@ describe "search test", ->
       async.eachSeries arr, (index, next) ->
         search.advancedSearch '呼', fieldName, 1, {filter:['kind','a'],sort:'score'}, {fetch_fields:['aid','score', 'search_name']}, 2, (err, data) ->
           console.error "error:#{err}"
-          console.dir data.errors unless (data||{}).status is "OK"
+          console.dir (data||{}).errors unless (data||{}).status is "OK"
           #console.dir data
           #console.dir data.result if (data||{}).status is "OK"
           setTimeout next, 100
