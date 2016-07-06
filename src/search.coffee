@@ -71,7 +71,6 @@ class SearchManager
     assert searchOptions, "missing options"
     assert searchOptions.accessKeyId, "missing opensearch key id"
     assert searchOptions.accessKeySecret, "missing opensearch key secret"
-
     @accessKeyId = searchOptions.accessKeyId
     @accessKeySecret = searchOptions.accessKeySecret
     @apiURL = searchOptions.apiURL || 'http://opensearch.aliyuncs.com'
@@ -215,7 +214,7 @@ class SearchManager
     #console.dir options
     request options, (err, res, body) =>
       unless err
-        body = @_parseResult(body, page)
+        body = @_parseResult(body, page, pageSize)
       callback err, body
       return
     return
@@ -269,10 +268,10 @@ class SearchManager
       url: "#{url}?#{urlEncode.query2string(params)}"
       method:GET_HTTP_METHOD
       timeout: @timeout
-
+    #console.dir options
     request options, (err, res, body) =>
       unless err
-        body = @_parseResult(body, page)
+        body = @_parseResult(body, page, pageSize)
       callback err, body
       return
     return
@@ -329,7 +328,7 @@ class SearchManager
       return
     return
 
-  _parseResult : (data, page) ->
+  _parseResult : (data, page, pageSize) ->
     return data unless data
     data = JSON.parse(data)
     return data unless page?
@@ -337,7 +336,8 @@ class SearchManager
     result = data.result
     return data unless result
     result['page'] = page
-    result['pagetotal'] =  parseInt((result.viewtotal+@pageSize-1)/@pageSize)
+    pageSize or= @pageSize
+    result['pagetotal'] =  parseInt((result.viewtotal+ pageSize - 1)/ pageSize)
     data.result = result
     return data
 

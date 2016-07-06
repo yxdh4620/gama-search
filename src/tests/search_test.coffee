@@ -6,7 +6,7 @@ should = require 'should'
 debug = require('debug')('gama-search::tests::search_test')
 config = require './config'
 SearchManager = require '../search'
-
+async = require 'async'
 ###
 action=push&Version=v2&AccessKeyId=$accessKeyId&Signature=$signature&
     SignatureMethod=HMAC-SHA1&Timestamp=$timestamp&SignatureVersion=1.0&
@@ -42,6 +42,7 @@ options =
   apiURL:con.host
   indexName:con.appName
   pageSize: con.pageSize
+  timeout: con.timeout
 
 fieldName = 'search_name'
 table_name = 'main'
@@ -185,20 +186,20 @@ describe "search test", ->
   #      console.dir data
   #      done()
 
-    it "search multi id test", (done) ->
-      search.searchByMultipleId "id:'989541712' OR id:'992232784'", null, (err, data) ->
-      #search.searchByMultipleId [989541712,992232784], null, (err, data) ->
-        console.log "err:#{err}"
-        console.dir data
-        console.dir data.result if (data||{}).status is "OK"
-        done()
+  #  it "search multi id test", (done) ->
+  #    search.searchByMultipleId "id:'989541712' OR id:'992232784'", null, (err, data) ->
+  #    #search.searchByMultipleId [989541712,992232784], null, (err, data) ->
+  #      console.log "err:#{err}"
+  #      console.dir data
+  #      console.dir data.result if (data||{}).status is "OK"
+  #      done()
 
-    it "search default test", (done) ->
-      search.search 'a', fieldName, null, 1, 2, (err, data) ->
-        console.error "error:#{err}"
-        console.dir data
-        console.dir data.result if (data||{}).status is "OK"
-        done()
+  #  it "search default test", (done) ->
+  #    search.search 'a', fieldName, null, 1, 2, (err, data) ->
+  #      console.error "error:#{err}"
+  #      console.dir data
+  #      console.dir data.result if (data||{}).status is "OK"
+  #      done()
 
     it "advancedSearch tests", (done)->
       subQuerys =
@@ -207,10 +208,18 @@ describe "search test", ->
 
       others =
         fetch_fields:['aid', 'score']
-      search.advancedSearch '呼', fieldName, 1, {filter:['kind','a'],sort:'score'}, {fetch_fields:['aid','score', 'search_name']}, 2, (err, data) ->
-        console.error "error:#{err}"
-        console.dir data
-        console.dir data.result if (data||{}).status is "OK"
+
+      arr = []
+      for i in [0..500]
+        arr.push i
+      async.eachSeries arr, (index, next) ->
+        search.advancedSearch '呼', fieldName, 1, {filter:['kind','a'],sort:'score'}, {fetch_fields:['aid','score', 'search_name']}, 2, (err, data) ->
+          console.error "error:#{err}"
+          #console.dir data.errors unless (data||{}).status is "OK"
+          #console.dir data
+          console.dir data.result if (data||{}).status is "OK"
+          setTimeout next, 100
+      ,(err) ->
         done()
 
   #  it "search kind sort test", (done) ->
