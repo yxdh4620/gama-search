@@ -158,10 +158,12 @@ class SearchManager
       url: "#{url}?#{urlEncode.query2string(params)}"
       method:GET_HTTP_METHOD
       timeout: @timeout
-    request options, (err, res, body) =>
+
+    request(options, (err, res, body) =>
       body = @_parseResult(body)
       callback err, body
       return
+    ).end()
     return
 
 
@@ -178,10 +180,11 @@ class SearchManager
       url: "#{url}?#{urlEncode.query2string(params)}"
       method:GET_HTTP_METHOD
       timeout: @timeout
-    request options, (err, res, body) =>
+    request(options, (err, res, body) =>
       body = @_parseResult(body)
       callback err, body
       return
+    ).end()
     return
 
 
@@ -212,11 +215,12 @@ class SearchManager
       method:GET_HTTP_METHOD
       timeout: @timeout
     #console.dir options
-    request options, (err, res, body) =>
+    request(options, (err, res, body) =>
       unless err
         body = @_parseResult(body, page, pageSize)
       callback err, body
       return
+    ).end()
     return
 
   advancedSearch : (queryStr, fieldName, page, subQuerys, others, pageSize, callback) ->
@@ -269,11 +273,12 @@ class SearchManager
       method:GET_HTTP_METHOD
       timeout: @timeout
     #console.dir options
-    request options, (err, res, body) =>
+    request(options, (err, res, body) =>
       unless err
         body = @_parseResult(body, page, pageSize)
       callback err, body
       return
+    ).end()
     return
 
 
@@ -322,10 +327,11 @@ class SearchManager
       method:httpMethod
       timeout: @timeout
       form: urlEncode.query2string(_.extend(params, queryParams))
-    request options, (err, res, body) =>
+    request(options, (err, res, body) =>
       body = @_parseResult(body)
       callback err, body
       return
+    ).end()
     return
 
   _parseResult : (data, page, pageSize) ->
