@@ -179,58 +179,58 @@ describe "search test", ->
   #      console.dir data
   #      done()
 
-  describe 'search tests', ->
-
-    it "search id test", (done) ->
-      search.searchById '989541712', null, (err, data) ->
-        console.log "err:#{err}"
-        console.dir data
-        done()
-
-    it "search multi id test", (done) ->
-      search.searchByMultipleId "id:'989541712' OR id:'992232784'", null, (err, data) ->
-      #search.searchByMultipleId [989541712,992232784], null, (err, data) ->
-        console.log "err:#{err}"
-        console.dir data
-        console.dir data.result if (data||{}).status is "OK"
-        done()
-
-    it "search default test", (done) ->
-      search.search 'a', fieldName, null, 1, 2, (err, data) ->
-        console.error "error:#{err}"
-        console.dir data
-        console.dir data.result if (data||{}).status is "OK"
-        done()
-
-    it "advancedSearch tests", (done)->
-      subQuerys =
-        filter:['kind','a']
-        sort: 'score'
-
-      others =
-        fetch_fields:['aid', 'score']
-
-      #search.advancedSearch '呼', fieldName, 1, {filter:['kind','a'],sort:'score'}, {fetch_fields:['aid','score', 'search_name']}, 2, (err, data) ->
-      #  console.error "error:#{err}"
-      #  console.dir data.result if (data||{}).status is "OK"
-      #  #console.dir data.errors unless (data||{}).status is "OK"
-      #  done()
-      #  return
-      #return
-
-      arr = []
-      for i in [0..500]
-        arr.push i
-      async.eachSeries arr, (index, next) ->
-        search.advancedSearch '呼', fieldName, 1, {filter:['kind','a'],sort:'score'}, {fetch_fields:['aid','score', 'search_name']}, 2, (err, data) ->
-          console.error "error:#{err}"
-          console.dir (data||{}).errors unless (data||{}).status is "OK"
-          #console.dir data
-          #console.dir data.result if (data||{}).status is "OK"
-          setTimeout next, 100
-      ,(err) ->
-        done()
-
+#  describe 'search tests', ->
+#
+#    it "search id test", (done) ->
+#      search.searchById '989541712', null, (err, data) ->
+#        console.log "err:#{err}"
+#        console.dir data
+#        done()
+#
+#    it "search multi id test", (done) ->
+#      search.searchByMultipleId "id:'989541712' OR id:'992232784'", null, (err, data) ->
+#      #search.searchByMultipleId [989541712,992232784], null, (err, data) ->
+#        console.log "err:#{err}"
+#        console.dir data
+#        console.dir data.result if (data||{}).status is "OK"
+#        done()
+#
+#    it "search default test", (done) ->
+#      search.search 'a', fieldName, null, 1, 2, (err, data) ->
+#        console.error "error:#{err}"
+#        console.dir data
+#        console.dir data.result if (data||{}).status is "OK"
+#        done()
+#
+#    it "advancedSearch tests", (done)->
+#      subQuerys =
+#        filter:['kind','a']
+#        sort: 'score'
+#
+#      others =
+#        fetch_fields:['aid', 'score']
+#
+#      #search.advancedSearch '呼', fieldName, 1, {filter:['kind','a'],sort:'score'}, {fetch_fields:['aid','score', 'search_name']}, 2, (err, data) ->
+#      #  console.error "error:#{err}"
+#      #  console.dir data.result if (data||{}).status is "OK"
+#      #  #console.dir data.errors unless (data||{}).status is "OK"
+#      #  done()
+#      #  return
+#      #return
+#
+#      arr = []
+#      for i in [0..500]
+#        arr.push i
+#      async.eachSeries arr, (index, next) ->
+#        search.advancedSearch '呼', fieldName, 1, {filter:['kind','a'],sort:'score'}, {fetch_fields:['aid','score', 'search_name']}, 2, (err, data) ->
+#          console.error "error:#{err}"
+#          console.dir (data||{}).errors unless (data||{}).status is "OK"
+#          #console.dir data
+#          #console.dir data.result if (data||{}).status is "OK"
+#          setTimeout next, 100
+#      ,(err) ->
+#        done()
+#
   #  it "search kind sort test", (done) ->
   #    search.search 'a', 'kind', 'score=0', 1, (err, data) ->
   #      console.error "error:#{err}"
@@ -262,12 +262,12 @@ describe "search test", ->
     #    console.dir data.result if (data||{}).status is "OK"
     #    done()
 
-  #describe "delete tests", ->
-  #  it 'delete single', (done) ->
-  #    search.delete ['aaaaaaaa'], table_name, (err, data) ->
-  #      console.error "error:#{err}"
-  #      console.dir data
-  #      done()
+  describe "delete tests", ->
+    it 'delete single', (done) ->
+      search.deleteByField "aid", ['950435714'], table_name, (err, data) ->
+        console.error "error:#{err}"
+        console.dir data
+        done()
 
   #  it 'delete mulit', (done) ->
   #    search.delete ['bbbbbb','ccccccc'], table_name, (err, data) ->
