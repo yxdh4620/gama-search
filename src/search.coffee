@@ -294,12 +294,18 @@ class SearchManager
     cmd = 'delete'
     query = []
     ids.map (id) ->
-      query.push {
-        cmd: cmd
-        fields:{
-          id:id
+      if _.isString(id)
+        query.push {
+          cmd: cmd
+          fields:{
+            id:id
+          }
         }
-      }
+      else
+        query.push {
+          cmd: cmd
+          fields:id
+        }
     params =
       action:'push'
       items:JSON.stringify(query)
