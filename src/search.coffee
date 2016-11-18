@@ -294,18 +294,40 @@ class SearchManager
     cmd = 'delete'
     query = []
     ids.map (id) ->
-      if _.isString(id)
-        query.push {
-          cmd: cmd
-          fields:{
-            id:id
-          }
+      query.push {
+        cmd: cmd
+        fields:{
+          id:id
         }
-      else
-        query.push {
-          cmd: cmd
-          fields:id
-        }
+      }
+    params =
+      action:'push'
+      items:JSON.stringify(query)
+      table_name: table_name
+      sing_mode: "#{SIGN_MODE}"
+    @apiCall url, params, POST_HTTP_METHOD, callback
+    return
+
+  # 删除文档
+  # @param field 主键列名
+  # @param ids [id,id]
+  # @param table_name 表名
+  # @return callback(err, data) data(json格式) 成功：'{"status":"OK","RequestId":"1413451169068930200630477"}' 失败：'{"status":"FAIL","errors":[{"code":4010,"message":"timestamp expired"}],"RequestId":"141344839303112480055370"}'
+  deleteByField : (field, ids, table_name, callback) ->
+    assert Array.isArray(ids) and ids.length>0, "missing options"
+    assert _.isString(field) and field.length>0, "missing options"
+    assert table_name, "missing table_name"
+    assert _.isFunction(callback), "missing callback"
+    url = urlUtil.resolve @serverURL, path.join("index/doc",@indexName)
+    cmd = 'delete'
+    query = []
+    ids.map (id) ->
+      fields = {}
+      fields[field] = id
+      query.push {
+        cmd: cmd
+        fields:fields
+      }
     params =
       action:'push'
       items:JSON.stringify(query)
