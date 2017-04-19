@@ -163,7 +163,7 @@ class SearchManager
       body = @_parseResult(body)
       callback err, body
       return
-    ).end()
+    )
     return
 
 
@@ -184,7 +184,7 @@ class SearchManager
       body = @_parseResult(body)
       callback err, body
       return
-    ).end()
+    )
     return
 
 
@@ -220,7 +220,7 @@ class SearchManager
         body = @_parseResult(body, page, pageSize)
       callback err, body
       return
-    ).end()
+    )
     return
 
   advancedSearch : (queryStr, fieldName, page, subQuerys, others, pageSize, callback) ->
@@ -278,7 +278,7 @@ class SearchManager
         body = @_parseResult(body, page, pageSize)
       callback err, body
       return
-    ).end()
+    )
     return
 
 
@@ -359,7 +359,7 @@ class SearchManager
       body = @_parseResult(body)
       callback err, body
       return
-    ).end()
+    )
     return
 
   _parseResult : (data, page, pageSize) ->
