@@ -336,6 +336,21 @@ class SearchManager
     @apiCall url, params, POST_HTTP_METHOD, callback
     return
 
+  # 下拉提示
+  # https://help.aliyun.com/document_detail/29151.html?spm=5176.doc29145.6.589.7kEdEx
+  # @param keyword
+  # @param indexName
+  # @param suggestName
+  # @param hit 数量[1-10]默认10
+  suggest:(keyword,indexName,suggestName,callback)->
+    params =
+      query:keyword
+      index_name:indexName
+      suggest_name:suggestName
+
+    url = urlUtil.resolve @serverURL,path.join("suggest")
+    @apiCall url,params,GET_HTTP_METHOD,callback
+
   #获得公共参数
   loadPublicParams : () ->
     publicParams = {}
@@ -350,11 +365,15 @@ class SearchManager
   apiCall : (url, params, httpMethod, callback) ->
     queryParams = @loadPublicParams()
     queryParams.Signature = cryptoUtil.makeSign(_.extend(queryParams, params), httpMethod, @accessKeySecret)
+    queryString = urlEncode.query2string(_.extend(params, queryParams))
+    if httpMethod is GET_HTTP_METHOD
+      url = "#{url}?#{queryString}"
     options =
       url: "#{url}"
       method:httpMethod
       timeout: @timeout
-      form: urlEncode.query2string(_.extend(params, queryParams))
+    if httpMethod is POST_HTTP_METHOD
+      options.form = queryString
     request(options, (err, res, body) =>
       body = @_parseResult(body)
       callback err, body
